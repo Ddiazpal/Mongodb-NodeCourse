@@ -28,5 +28,14 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) =>{
     console.log(result.ops[0]._id.getTimestamp());
   });*/
 
-  db.close();
+  db.collection('Users').find({
+      name: 'Daniela'
+    }).toArray().then((docs) => {
+      console.log('Users');
+      console.log(JSON.stringify(docs, undefined, 2));
+    }, (err) => {
+      console.log('Unable to fetch Users', err);
+    });
+
+//  db.close();
 });

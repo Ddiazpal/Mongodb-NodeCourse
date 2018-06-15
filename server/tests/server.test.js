@@ -123,7 +123,7 @@
           }
 
           Todo.findById(hexId).then((todo) => {
-            expect(todo).toNotExist();
+            expect(todo).toBeFalsy();
             done();
           }).catch((e) => done(e));
         });
@@ -142,7 +142,7 @@
           }
 
           Todo.findById(hexId).then((todo) => {
-            expect(todo).toExist();
+            expect(todo).toBeTruthy();
             done();
           }).catch((e) => done(e));
         });
@@ -183,6 +183,7 @@
           expect(res.body.todo.text).toBe(text);
           expect(res.body.todo.completed).toBe(true);
         //  expect(res.body.todo.completedAt).toBe('number');
+        expect(typeof res.body.todo.completedAt).toBe('number');
         })
         .end(done)
       });
@@ -217,7 +218,7 @@
         .expect((res) => {
           expect(res.body.todo.text).toBe(text);
           expect(res.body.todo.completed).toBe(false);
-          expect(res.body.todo.completedAt).toNotExist();
+          expect(res.body.todo.completedAt).toBeFalsy();
         })
         .end(done)
 
@@ -258,8 +259,8 @@
         .send({email,password})
         .expect(200)
         .expect((res) => {
-          expect(res.headers['x-auth']).toExist();
-          expect(res.body._id).toExist();
+          expect(res.headers['x-auth']).toBeTruthy();
+          expect(res.body._id).toBeTruthy();
           expect(res.body.email).toBe(email);
         })
         .end((err) => {
@@ -268,8 +269,8 @@
           }
 
           User.findOne({email}).then((user)=>{
-            expect(user).toExist();
-            expect(user.password).toNotBe(password);
+            expect(user).toBeTruthy();
+            expect(user.password).not.toBe(password);
             done();
           }).catch((e) => done(e));
         });
@@ -308,7 +309,7 @@
         })
         .expect(200)
         .expect((res) =>{
-          expect(res.headers['x-auth']).toExist();
+          expect(res.headers['x-auth']).toBeTruthy();
         })
         .end((err, res) =>{
           if(err){
@@ -316,7 +317,7 @@
           }
 
           User.findById(users[1]._id).then((user) => {
-            expect(user.tokens[0]).toInclude({
+            expect(user.toObject().tokens[0]).toMatchObject({
               access: 'auth',
               token: res.headers['x-auth']
             });
@@ -334,7 +335,7 @@
         })
         .expect(404)
         .expect((res) =>{
-          expect(res.headers['x-auth']).toNotExist();
+          expect(res.headers['x-auth']).toBeFalsy();
         })
         .end((err, res) =>{
           if(err){

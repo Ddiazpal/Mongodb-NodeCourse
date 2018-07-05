@@ -17,7 +17,7 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) =>{
     console.log(JSON.stringify(result.ops, undefined, 2));
   });*/
 
-  /*db.collection('Users').insertOne({
+  db.collection('Users').insertOne({
     name: 'Daniela',
     age: 25,
     location: 'Bogota'
@@ -26,16 +26,16 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) =>{
       return console.log('Unable to insert users', err);
     }
     console.log(result.ops[0]._id.getTimestamp());
-  });*/
+  });
 
-  db.collection('Users').find({
+ /* db.collection('Users').find({
       name: 'Daniela'
     }).toArray().then((docs) => {
       console.log('Users');
       console.log(JSON.stringify(docs, undefined, 2));
     }, (err) => {
       console.log('Unable to fetch Users', err);
-    });
+    }); */
 
 //  db.close();
 });
